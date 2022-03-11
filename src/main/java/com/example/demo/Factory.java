@@ -1,25 +1,28 @@
 package com.example.demo;
 
-import java.util.List;
-
 import com.example.demo.application.AddCharacterCommand;
 import com.example.demo.application.ICommand;
-import com.example.demo.exceptions.WrongArgumentException;
 import com.example.demo.ui.ITextEditorUi;
+import com.example.demo.ui.ITextField;
 import com.example.demo.ui.TextEditorUi;
 
 public class Factory {
-    
-    public static ITextEditorUi getTextEditorUi(){
-        return TextEditorUi.create();
-    }
+    private static Environment environment;
 
-    public static ICommand createCommand(String command, List<Object> arguments) throws WrongArgumentException{
-        switch(command){
-            case "addCharacter": 
-                return AddCharacterCommand.create(arguments);
+    public static Environment createEnvironment(){
+        if (environment == null){
+            environment = new Environment();
+            environment.setTextEditorUi(createTextEditorUi(environment));
         }
 
-        return null;
+        return environment;
+    }
+
+    public static ITextEditorUi createTextEditorUi(Environment environment) {
+        return TextEditorUi.create(environment);
+    }
+
+    public static ICommand createAddCharacterCommand(ITextField textField, Character character) {
+        return AddCharacterCommand.create(textField, character);
     }
 }

@@ -1,32 +1,36 @@
 package com.example.demo.application;
 
-import java.util.List;
-
-import com.example.demo.exceptions.WrongArgumentException;
-import com.example.demo.ui.ITextEditorUi;
+import com.example.demo.ui.ITextField;
 
 public class AddCharacterCommand extends Command {
 
-    private AddCharacterCommand(ITextEditorUi textEditorUi) {
-        super(textEditorUi);
+    private ITextField textField;
+    private Character character;
+
+    private AddCharacterCommand(ITextField textField, Character character) {
+        this.textField = textField;
+        this.character = character;
     }
 
-    public static ICommand create(List<Object> arguments) throws WrongArgumentException{
-        if(arguments.isEmpty()){
-            return new AddCharacterCommand((ITextEditorUi) arguments.get(0));
-        } throw new WrongArgumentException();
+    public static ICommand create(ITextField textField, Character character) {
+        ICommand command =  new AddCharacterCommand(textField, character);
+        return command;
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        
+        textField.addCharacter(character);
     }
 
     @Override
     public void undo() {
-        // TODO Auto-generated method stub
-        
+        textField.removeCharacter();
+
+    }
+
+    @Override
+    public String toString() {
+        return "AddCharacterCommand [character=" + character + "]";
     }
     
 }

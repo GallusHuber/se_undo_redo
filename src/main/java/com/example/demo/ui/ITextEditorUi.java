@@ -1,6 +1,8 @@
 package com.example.demo.ui;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public interface ITextEditorUi {
-    String getContent();
-    void setContent(String content);
+    ITextField getTextField();
 }

@@ -19,10 +19,7 @@ public class Environment {
 
     private void addCommand(ICommand command){
         if(cursor + 1 < history.size()){
-            for(int i = cursor + 1; i < history.size(); i += 1){
-                ICommand commandRemove = history.remove(i);
-                System.out.println("Removing: " + commandRemove.toString());
-            }
+            history = history.subList(0, cursor + 1);
         }
 
         history.add(command);

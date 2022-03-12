@@ -1,4 +1,4 @@
-package com.example.demo.application;
+package com.example.demo.command;
 
 import com.example.demo.Environment;
 

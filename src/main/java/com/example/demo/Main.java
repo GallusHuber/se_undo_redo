@@ -2,6 +2,7 @@ package com.example.demo;
 
 public class Main {
 	public static void main(String[] args) {
-		Factory.createEnvironment();
+		Environment environment = Factory.createEnvironment();
+		Factory.createTextEditorUi(environment);
 	}
 }

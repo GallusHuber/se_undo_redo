@@ -3,41 +3,28 @@ package com.example.demo;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.example.demo.application.ICommand;
-import com.example.demo.ui.ITextEditorUi;
+import com.example.demo.command.ICommand;
+import com.example.demo.ui.TextField;
 
 public class Environment {
     private List<ICommand> history;
     private int cursor;
-
-    private ITextEditorUi textEditorUi;
 
     public Environment(){
         this.history = new LinkedList<>();
         this.cursor = -1;
     }
 
-    private void addCommand(ICommand command){
-        if(cursor + 1 < history.size()){
-            history = history.subList(0, cursor + 1);
-        }
-
-        history.add(command);
-        cursor += 1;
-        System.out.println(command.toString());
-    }
-
-    public void handleKeyPress(Character character){
-        ICommand command = Factory.createAddCharacterCommand(textEditorUi.getTextField(), character);
-        command.execute();
+    public void handleKeyPress(TextField textField, Character character){
+        ICommand command = Factory.createAddCharacterCommand(textField, character);
         addCommand(command);
+        command.execute();
     }
 
     public void handleUndo(){
         if(cursor >= 0){
             ICommand command = history.get(cursor);
             command.undo();
-            System.out.println("Undo: " + command.toString());
             
             cursor -= 1;
         }else{
@@ -51,13 +38,26 @@ public class Environment {
             
             ICommand command = history.get(cursor);
             command.redo();
-            System.out.println("Redo: " + command.toString());
         }else{
             System.out.println("No command to redo");
         }
     }
 
-    public void setTextEditorUi(ITextEditorUi textEditorUi){
-        this.textEditorUi = textEditorUi;
+    private void addCommand(ICommand command){
+        if(cursor + 1 < history.size()){
+            history = history.subList(0, cursor + 1);
+        }
+
+        history.add(command);
+        cursor += 1;
     }
+
+    public List<ICommand> getHistory() {
+        return history;
+    }
+
+    public int getCursor() {
+        return cursor;
+    }
+
 }

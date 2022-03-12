@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import com.example.demo.application.AddCharacterCommand;
-import com.example.demo.application.ICommand;
+import com.example.demo.command.AddCharacterCommand;
+import com.example.demo.command.ICommand;
 import com.example.demo.ui.ITextEditorUi;
 import com.example.demo.ui.ITextField;
 import com.example.demo.ui.TextEditorUi;
@@ -12,7 +12,6 @@ public class Factory {
     public static Environment createEnvironment(){
         if (environment == null){
             environment = new Environment();
-            environment.setTextEditorUi(createTextEditorUi(environment));
         }
 
         return environment;

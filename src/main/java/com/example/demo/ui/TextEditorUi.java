@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -39,6 +41,23 @@ public class TextEditorUi implements ITextEditorUi {
         frame.add(initHistoryViewer(), BorderLayout.CENTER);
         frame.add(initButtons(), BorderLayout.SOUTH);
 
+        frame.addKeyListener(new KeyListener(){
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                environment.handleKeyPress(textField, e.getKeyChar());
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+
+        });
+
+        frame.setFocusable(true);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
@@ -55,18 +74,19 @@ public class TextEditorUi implements ITextEditorUi {
         this.textField = new TextField();
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
-                TextEditorUi.this.updateHistoryList();
+                updateHistoryList();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                TextEditorUi.this.updateHistoryList();
+                updateHistoryList();
             }
 
             public void insertUpdate(DocumentEvent e) {
-                TextEditorUi.this.updateHistoryList();
+                updateHistoryList();
             }
         });
 
+        textField.setEditable(false);
         return textField;
     }
 
@@ -74,36 +94,13 @@ public class TextEditorUi implements ITextEditorUi {
         JPanel panelButtons = new JPanel();
         panelButtons.setLayout(new BorderLayout());
 
-        JPanel panelABC = new JPanel();
-        JButton buttonA = new JButton("A");
-        buttonA.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                environment.handleKeyPress(TextEditorUi.this.textField, 'A');
-
-            }
-        });
-        panelABC.add(buttonA);
-
-        JButton buttonB = new JButton("B");
-        buttonB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                environment.handleKeyPress(TextEditorUi.this.textField, 'B');
-
-            }
-        });
-        panelABC.add(buttonB);
-
-        panelButtons.add(panelABC, BorderLayout.NORTH);
-
         JPanel panelUndoRedo = new JPanel();
         JButton buttonUndo = new JButton("Undo");
         buttonUndo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 environment.handleUndo();
-
+                frame.requestFocus();
             }
         });
         panelUndoRedo.add(buttonUndo);
@@ -113,7 +110,7 @@ public class TextEditorUi implements ITextEditorUi {
             @Override
             public void actionPerformed(ActionEvent e) {
                 environment.handleRedo();
-
+                frame.requestFocus();
             }
         });
         panelUndoRedo.add(buttonRedo);

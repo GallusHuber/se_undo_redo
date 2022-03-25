@@ -1,0 +1,93 @@
+@startuml undo_redo
+
+' Commands
+interface ICommand {
+    void execute()
+    void undo()
+    void redo()
+}
+
+abstract class Command{
+    private environment: Environment 
+    
+    public void redo()
+}
+
+class AddCharacterCommand{
+    private textField: ITextField
+    private character: Character
+
+    private AddCharacterCommand(ITextField textField, Character character)
+
+    public ICommand create(ITextField textField, Character character)
+    public void execute()
+    public void undo()
+    public String toString()
+}
+
+ICommand <|... Command
+Command <|--- AddCharacterCommand
+
+' controll
+class Environment {
+    private history: List<ICommand>
+    private cursor: int
+
+    public Environment()
+
+    public void handleKeyPress(TextField textField, Character character)
+    public void handleUndo()
+    public void handleRedo()
+    public List<ICommand> getHistory()
+    public int getCursor()
+    
+    private void addCommand(ICommand command)
+}
+
+class Factory {
+    private environment: Environment
+
+    public Environment createEnvironment()
+    public ITextEditorUi createTextEditorUi(Environment environment)
+    public ICommand createAddCharacterCommand(ITextField textField, Character character)
+}
+
+
+' UI
+interface ITextEditorUi {
+    ITextField getTextField()
+}
+
+interface ITextField {
+    void addCharacter(Character character)
+    void removeCharacter()
+}
+
+class TextEditorUi{
+    private environment: Environment
+
+    private frame: JFrame
+    private TextField textField;
+    private DefaultListModel<String> historyListModel;
+
+    private TextEditorUi(Environment environment)
+
+    public static ITextEditorUi create(Environment environment)
+    public ITextField getTextField()
+
+    private JTextField initTextField()
+    private JPanel initButtons()
+    private JList initHistoryViewer()
+    private void updateHistoryList()
+
+}
+
+class TextField {
+    public void addCharacter(Character character)
+    public void removeCharacter()
+}
+
+ITextEditorUi <|... TextEditorUi
+ITextField <|... TextField
+
+@enduml

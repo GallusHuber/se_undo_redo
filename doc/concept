@@ -1,0 +1,17 @@
+Environment:
+    Zentrale Klasse; hält die Command-Objekte und ermöglich dadurch undo/redo Funktionalität;
+
+Factory:
+    Instanzierung der gewünschten Objekte
+
+ITextEditorUi / TextEditorUi:
+    Anzeige und Eingabehandling; Hält eine Referenz auf Environment um neue Commands zu erstellen
+
+ITextField / TextField:
+    Zeigt beliebig viele Zeichen auf dem UI an; bietet die Möglichkeit einzelne Character hinzuzufügen / zu löschen
+
+ICommand / Command:
+    Interface / abstrakte Klasse der Commands; bietet eine Standardimplementierung der redo-Funktionalität
+
+AddCharacterCommand:
+    Konkrete Command Implementierung; Fügt einen Character einem ITextField hinzu

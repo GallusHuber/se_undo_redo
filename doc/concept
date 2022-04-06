@@ -1,5 +1,5 @@
 Environment:
-    Zentrale Klasse; hält die Command-Objekte und ermöglich dadurch undo/redo Funktionalität;
+    Zentrale Klasse; hält die Command-Objekte und ermöglicht dadurch undo/redo Funktionalität;
 
 Factory:
     Instanzierung der gewünschten Objekte

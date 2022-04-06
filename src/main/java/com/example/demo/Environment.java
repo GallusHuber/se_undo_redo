@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.example.demo.command.ICommand;
-import com.example.demo.ui.TextField;
+import com.example.demo.ui.ITextField;
 
 public class Environment {
     private List<ICommand> history;
@@ -15,7 +15,7 @@ public class Environment {
         this.cursor = -1;
     }
 
-    public void handleKeyPress(TextField textField, Character character){
+    public void handleKeyPress(ITextField textField, Character character){
         ICommand command = Factory.createAddCharacterCommand(textField, character);
         addCommand(command);
         command.execute();

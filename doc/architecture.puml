@@ -44,6 +44,9 @@ class Environment {
     private void addCommand(ICommand command)
 }
 
+Environment -- ICommand
+Environment -- ITextEditorUi
+
 class Factory {
     private environment: Environment
 
@@ -89,5 +92,10 @@ class TextField {
 
 ITextEditorUi <|... TextEditorUi
 ITextField <|... TextField
+ITextEditorUi -- ITextField
+
+Factory -- Environment : "creates"
+Factory -- ITextEditorUi : "creates"
+Factory -- ICommand : "creates"
 
 @enduml
